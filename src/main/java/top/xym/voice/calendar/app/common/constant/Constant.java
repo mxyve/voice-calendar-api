@@ -7,4 +7,18 @@ public interface Constant {
     String UPDATE_TIME = "updateTime";
     //逻辑删除
     String DELETED = "deleted";
+    // ⽤户id
+    String USER_ID = "userId";
+
+    // 微信小程序 appId
+
+    // appSecret
+    // 微信返回参数中的属性名
+    String WX_ERR_CODE = "errcode";
+    // 返回参数中的属性名
+    String WX_OPENID = "openid";
+    // 返回参数中的属性名
+    String WX_SESSION_KEY = "session_key";
+    // 前端没有登录的时候会携带的token，后续会⽤到
+    String NO_TOKEN = "no-token";
 }
