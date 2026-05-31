@@ -30,10 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -72,9 +69,14 @@ public class MessageService {
         Integer userId = RequestContext.getUserId();
         System.out.println("AI对话，用户ID：" + userId);
 
+        // 保存识别后的文字
+        String recognizedText = null;
+
         // 1. 语音识别
         if (StringUtils.isNotBlank(request.getAudio())) {
             try {
+                // 保存识别结果
+                recognizedText = qwenAsrByHttp(request.getAudio());
                 String text = qwenAsrByHttp(request.getAudio());
                 request.setContent(text);
             } catch (Exception e) {
@@ -102,11 +104,23 @@ public class MessageService {
         } catch (Exception ignored) {
         }
 
-        // 5. 一次性返回
-        return Map.of(
-                "text", aiResult,
-                "audio", audioBase64
-        );
+        // 5. 返回（同时返回识别文字和AI回复）
+        Map<String, String> result = new HashMap<>();
+        // AI回复内容
+        result.put("response", aiResult);
+        // AI语音
+        result.put("audio", audioBase64);
+
+        // 如果是语音输入，返回识别后的文字
+        if (recognizedText != null) {
+            // 用户语音识别文字
+            result.put("recognizedText", recognizedText);
+        } else {
+            // 文本输入
+            result.put("recognizedText", request.getContent());
+        }
+
+        return result;
     }
 
     /**

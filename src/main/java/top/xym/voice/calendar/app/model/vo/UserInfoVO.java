@@ -18,5 +18,5 @@ public class UserInfoVO implements Serializable {
     @Schema(description = "头像")
     private String avatar;
     @Schema(description = "昵称")
-    private String nickname;
+    private String nickName;
 }

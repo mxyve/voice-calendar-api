@@ -11,7 +11,9 @@ public interface Constant {
     String USER_ID = "userId";
 
     // 微信小程序 appId
-
+    String APP_ID = "wx6f68bfa2a7373025";
+    // appSecret
+    String APP_SECRET = "a0e99ba45494a7c7ac1bcdb16a244810";
     // appSecret
     // 微信返回参数中的属性名
     String WX_ERR_CODE = "errcode";

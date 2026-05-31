@@ -1,0 +1,98 @@
+server:
+  # 系统运⾏端⼝
+  port: 8080
+  servlet:
+    # 上下⽂路径前缀
+    context-path: /voice-calendar-app-api
+
+spring:
+  application:
+    # 系统名称
+    name: voice-calendar-app-api
+  profiles:
+    # 运⾏环境
+    active: dev
+  mvc:
+    path-match:
+      matching-strategy: ant_path_matcher
+
+  ai:
+    dashscope:
+      api-key: 
+      chat:
+        options:
+          model: qwen-plus
+          temperature: 0.2
+          seed: 123456
+          top_p: 0.6
+          max-tokens: 2000
+          stream: false
+
+# 数据持久层框架配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  # 实体类包路径，可⾃⾏修改
+  type-aliases-package: top.xym.*.entity
+  configuration:
+    # 字段名允许驼峰
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    # ⽇志输出
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      # 逻辑删除配置
+      logic-delete-field: true
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 系统⽇志输出配置
+logging:
+  # 配置⽂件位置
+  config: classpath:log/logback-spring.xml
+
+# springdoc-openapi
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      # 扫描 controller 包的路径，⾃⾏修改
+      packages-to-scan: top.xym.voice.calendar.app.controller
+
+# knife4j
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+  basic:
+    enable: true
+    username: 
+    password: 
+
+# ⾃定义配置，需要校验的 url 前缀，后⾯会介绍
+auth:
+  valid_urls:
+    - /auth/logout
+    - /user/**
+    - /schedule/**
+    - /ai/chat
+
+aliyun:
+  oss:
+    endpoint: 
+    accessKeyId: 
+    accessKeySecret: 
+    bucketName: 
+    temp-dir: temp/qa-image
+    url-expire: 1800
+    max-file-size: 5MB
+    allowed-types: jpg,jpeg,png,gif
+  nls:
+    app-key: 
+
